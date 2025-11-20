@@ -42,7 +42,7 @@ function App() {
   return (
     <>
       <div>
-        <h1>学習記録一覧</h1>
+        <h1>学習記録一覧！</h1>
         <div>
           <label htmlFor="title">学習内容</label>
           <input
