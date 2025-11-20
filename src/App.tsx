@@ -36,6 +36,8 @@ function App() {
         ...records,
         { id: records.length + 1, title: title, time: time },
       ]);
+      setTitle("");
+      setTime(0);
     }
   };
 
