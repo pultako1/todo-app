@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi, beforeEach } from "vitest";
 import {
   fireEvent,
   render,
@@ -9,8 +9,22 @@ import {
 } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import App from "../App";
+import * as supabaseUtils from "../utils/supabase";
+
+vi.mock("../utils/supabase", () => ({
+  getAllTodos: vi.fn(),
+  addTodo: vi.fn(),
+}));
 
 describe("App", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.mocked(supabaseUtils.getAllTodos).mockResolvedValue([
+      { id: 1, title: "テストタスク", time: 1 },
+    ]);
+    vi.mocked(supabaseUtils.addTodo).mockResolvedValue(null);
+  });
+
   test("アプリタイトルが表示されている", async () => {
     render(<App />);
     await waitForElementToBeRemoved(() => screen.getByText("Loading..."));

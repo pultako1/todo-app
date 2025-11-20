@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { supabase } from "./lib/supabaseClient";
+// import { supabase } from "./lib/supabaseClient";
 import type { Todo } from "./domain/todo";
+import { addTodo, getAllTodos } from "./utils/supabase";
 
 function App() {
   const [title, setTitle] = useState("");
@@ -12,10 +13,8 @@ function App() {
   //supabaseから学習記録を取得
   useEffect(() => {
     const fetchRecords = async () => {
-      const { data, error } = await supabase.from("todolist").select("*");
-      if (error) {
-        console.error(error);
-      } else {
+      const data = await getAllTodos();
+      if (data) {
         setRecords(data as Todo[]);
         setIsLoading(false);
       }
@@ -27,10 +26,7 @@ function App() {
       alert("学習内容と学習時間を入力してください");
       return;
     }
-    const { error } = await supabase.from("todolist").insert({
-      title: title,
-      time: time,
-    });
+    const error = await addTodo(title, time);
     if (error) {
       console.error(error);
     } else {
